@@ -1,5 +1,3 @@
-# services/exportacaoService.py
-
 import pandas as pd
 from db.conexao import conectar_banco, fechar_banco
 from utils.mensagem import mensagem_erro, mensagem_sucesso

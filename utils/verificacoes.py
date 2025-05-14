@@ -15,9 +15,8 @@ def verificar_aliquotas_nulas(nome_banco, parent=None):
         total_nulas = resultado['total'] if resultado else 0
 
         if total_nulas == 0:
-            return  # Nada a fazer
+            return
 
-        # Exibir popup ao usuário
         resposta = QMessageBox.question(
             parent,
             "Alíquotas Pendentes",

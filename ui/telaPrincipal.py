@@ -39,7 +39,6 @@ class TelaPrincipal(QWidget):
         botoes = [
             ("📄 Enviar Tributação", self.enviar_tributacao),
             ("📥 Importar SPED", self.importar_sped),
-            ("🧮 Preencher Alíquotas", self.preencher_aliquotas),
             ("📤 Exportar por Mês/Ano", self.exportar_tabela),
             ("🔙 Voltar ao Início", self.voltar)
         ]
@@ -133,11 +132,6 @@ class TelaPrincipal(QWidget):
 
         except Exception as e:
             mensagem_erro(f"Erro ao importar SPED: {e}")
-
-    def preencher_aliquotas(self):
-        QMessageBox.information(self, "Ação", "Tela de preenchimento de alíquotas ainda será implementada.")
-        # self.aliquotas = PreencherAliquotas(self.nome_empresa)
-        # self.aliquotas.show()
 
     def exportar_tabela(self):
         mes = self.combo_mes.currentText()
