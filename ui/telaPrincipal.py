@@ -12,6 +12,7 @@ from services.tributacao_service import importar_planilha_tributacao
 from services.sped_service import processar_sped, atualizar_ncm, clonar_c170,atualizar_aliquota, atualizar_aliquota_simples, atualizar_resultado
 from services.exportacaoService import exportar_tabela
 from services.fornecedor_service import cadastro_fornecedores
+from db.empresaCRUD import nomear_banco_por_razao_social
 
 class TelaPrincipal(QWidget):
     def __init__(self, nome_empresa):
@@ -114,10 +115,28 @@ class TelaPrincipal(QWidget):
             for i, caminho in enumerate(arquivos):
                 with open(caminho, 'r', encoding='utf-8', errors='ignore') as arquivo:
                     conteudo = arquivo.read()
-                    from db.empresaCRUD import nomear_banco_por_razao_social
-
                     nome_banco = nomear_banco_por_razao_social(self.nome_empresa)
-                    processar_sped(conteudo, nome_banco)
+                    
+                    try:
+                        processar_sped(conteudo, nome_banco)
+                        print("✓ processar_sped concluído com sucesso")
+                    except Exception as e:
+                        mensagem_erro(f"Erro em processar_sped: {e}")
+                        return
+
+                    try:
+                        atualizar_ncm(self.nome_empresa)
+                        print("✓ atualizar_ncm concluído com sucesso")
+                    except Exception as e:
+                        mensagem_erro(f"Erro em atualizar_ncm: {e}")
+                        return
+
+                    try:
+                        clonar_c170(self.nome_empresa)
+                        print("✓ clonar_c170 concluído com sucesso")
+                    except Exception as e:
+                        mensagem_erro(f"Erro em clonar_c170: {e}")
+                        return
 
             atualizar_ncm(self.nome_empresa)
             clonar_c170(self.nome_empresa)
