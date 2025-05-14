@@ -42,7 +42,6 @@ class AnimatedCard(QFrame):
         layout.setContentsMargins(25, 22, 25, 22)
         layout.setSpacing(15)
 
-        # Ícone
         icon_label = QLabel()
         pixmap = QPixmap(icon_path)
         if not pixmap.isNull():
@@ -56,24 +55,20 @@ class AnimatedCard(QFrame):
         icon_layout.setContentsMargins(0, 0, 0, 0)
         icon_layout.addWidget(icon_label)
 
-        # Título
         title_label = QLabel(title)
         title_label.setFont(QFont("Segoe UI", 15, QFont.Bold))
         title_label.setStyleSheet("color: white;")
 
-        # Descrição
         desc_label = QLabel(self._format_description(description_list))
         desc_label.setStyleSheet("font-size: 13px;")
         desc_label.setTextFormat(Qt.RichText)
         desc_label.setWordWrap(True)
 
-        # Botão
         button = QPushButton("Acessar")
         button.setCursor(Qt.PointingHandCursor)
         button.setStyleSheet(self._get_button_stylesheet())
         button.clicked.connect(self.clicked.emit)
 
-        # Layout do card
         header_layout = QHBoxLayout()
         header_layout.addWidget(icon_container)
         header_layout.addStretch()
@@ -84,7 +79,6 @@ class AnimatedCard(QFrame):
         layout.addStretch()
         layout.addWidget(button)
 
-        # Guardar referências
         self._icon_label = icon_label
         self._icon_container = icon_container
         self._title_label = title_label
@@ -93,7 +87,6 @@ class AnimatedCard(QFrame):
         self._layout = layout
 
     def _setup_animations(self):
-        # Animação de entrada
         self.opacity_effect = QGraphicsOpacityEffect(self)
         self.setGraphicsEffect(self.opacity_effect)
         self.animation = QPropertyAnimation(self.opacity_effect, b"opacity")
@@ -101,7 +94,7 @@ class AnimatedCard(QFrame):
         self.animation.setStartValue(0)
         self.animation.setEndValue(1)
         self.animation.setEasingCurve(QEasingCurve.InOutQuad)
-        # Animação de hover
+
         self.hover_animation = QPropertyAnimation(self, b"geometry")
         self.hover_animation.setDuration(200)
         self.hover_animation.setEasingCurve(QEasingCurve.OutCubic)
@@ -182,4 +175,3 @@ class AnimatedCard(QFrame):
             self.clicked.emit()
         super().mousePressEvent(event)
 
-# Fim dos componentes auxiliares para o dashboard

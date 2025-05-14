@@ -93,7 +93,7 @@ class Dashboard(QWidget):
             ],
             "#3B82F6"
         )
-        card1.clicked.connect(print("ainda à implementar"))
+        card1.clicked.connect(self.abrir_tela_empresa)
         self.animations.append(card1.animation)
 
         cards_grid.addWidget(card1, 0, 0)
@@ -101,7 +101,6 @@ class Dashboard(QWidget):
         cards_section.addLayout(cards_grid)
         content_layout.addLayout(cards_section)
 
-        # Rodapé
         footer = QLabel("© 2025 Assertivus Contábil - Todos os direitos reservados.")
         footer.setStyleSheet("color: #FFFFFF; font-size: 12px; margin-top: 30px;")
         footer.setAlignment(Qt.AlignCenter)
@@ -115,3 +114,9 @@ class Dashboard(QWidget):
     def start_animations(self):
         for i, animation in enumerate(self.animations):
             QTimer.singleShot(i * 150, animation.start)
+
+    def abrir_tela_empresa(self):
+        from ui.telaEmpresa import TelaEmpresa
+        self.tela_empresa = TelaEmpresa()
+        self.tela_empresa.show()
+        self.close()
