@@ -68,3 +68,22 @@ def criar_banco_principal():
         conexao.commit()
     finally:
         fechar_banco(conexao)
+
+def listar_empresas():
+    conexao = conectar_banco(NOME_BANCO_EMPRESAS)
+    if not conexao:
+        criar_banco_principal()
+        conexao = conectar_banco(NOME_BANCO_EMPRESAS)
+    
+    empresas = []
+    try:
+        with conexao.cursor() as cursor:
+            cursor.execute("SELECT razao_social FROM empresas ORDER BY razao_social")
+            resultados = cursor.fetchall()
+            empresas = [resultado['razao_social'] for resultado in resultados]
+    except Exception as e:
+        print(f"Erro ao listar empresas: {e}")
+    finally:
+        fechar_banco(conexao)
+    
+    return empresas

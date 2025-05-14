@@ -3,3 +3,5 @@ pymysql
 pandas
 openyxl
 aiohttp
+python-dotenv
+dbutils
