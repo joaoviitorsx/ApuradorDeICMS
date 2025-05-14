@@ -1,14 +1,11 @@
+import asyncio
+
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton,QHBoxLayout, QMessageBox, QFileDialog, QComboBox
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QCursor, QFont
 
 from datetime import datetime
-from ui.telaEmpresa import TelaEmpresa
-# from ui.modulos.tributacao import EnviarTributacao
-# from ui.modulos.importar_sped import ImportarSped
-# from ui.preencherAliquotas import PreencherAliquotas
-# from services.exportacaoService import exportar_tabela  # futuro
-from utils.mensagem import mensagem_sucesso, mensagem_erro
+from utils.mensagem import mensagem_erro, mensagem_aviso, mensagem_sucesso
 from utils.process_data import process_data
 from utils.verificacoes import verificar_aliquotas_nulas
 from services.tributacao_service import importar_planilha_tributacao
@@ -73,8 +70,7 @@ class TelaPrincipal(QWidget):
         self.btn_exportar.clicked.connect(self.exportar_tabela)
         linha_export.addWidget(self.btn_exportar)
 
-        self.layout.addLayout(linha_export)
-
+        layout.addLayout(linha_export)
 
     def estilo_botao(self):
         return """
@@ -103,7 +99,7 @@ class TelaPrincipal(QWidget):
             return
         importar_planilha_tributacao(caminho, self.nome_empresa)
 
-    async def importar_sped(self):
+    def importar_sped(self):
         arquivos, _ = QFileDialog.getOpenFileNames(
             self,
             "Selecionar Arquivos SPED",
@@ -118,14 +114,17 @@ class TelaPrincipal(QWidget):
             for i, caminho in enumerate(arquivos):
                 with open(caminho, 'r', encoding='utf-8', errors='ignore') as arquivo:
                     conteudo = arquivo.read()
-                    processar_sped(conteudo, self.nome_empresa)
+                    from db.empresaCRUD import nomear_banco_por_razao_social
+
+                    nome_banco = nomear_banco_por_razao_social(self.nome_empresa)
+                    processar_sped(conteudo, nome_banco)
 
             atualizar_ncm(self.nome_empresa)
             clonar_c170(self.nome_empresa)
             atualizar_aliquota(self.nome_empresa)
             atualizar_aliquota_simples(self.nome_empresa)
             atualizar_resultado(self.nome_empresa)
-            await cadastro_fornecedores(self.nome_empresa)
+            cadastro_fornecedores(self.nome_empresa)
 
             mensagem_sucesso(f"{len(arquivos)} arquivo(s) SPED processado(s) com sucesso.")
             verificar_aliquotas_nulas(self.nome_empresa, self)
@@ -146,6 +145,7 @@ class TelaPrincipal(QWidget):
 
 
     def voltar(self):
+        from ui.telaEmpresa import TelaEmpresa
         self.inicio = TelaEmpresa()
         self.inicio.showMaximized()
         self.close()

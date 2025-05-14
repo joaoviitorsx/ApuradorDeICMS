@@ -3,7 +3,7 @@ from PySide6 import QtWidgets, QtGui, QtCore
 from PySide6.QtWidgets import QMessageBox
 import os
 
-def mensagem_error(mensagem):
+def mensagem_erro(mensagem):
     msg_erro = QtWidgets.QMessageBox()
     msg_erro.setIcon(QtWidgets.QMessageBox.Critical)
     msg_erro.setWindowTitle("Erro")

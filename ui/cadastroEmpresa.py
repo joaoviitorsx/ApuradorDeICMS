@@ -3,7 +3,6 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QCursor
 
 from db.empresaCRUD import cadastrar_empresa, nomear_banco_por_razao_social
-from ui.telaEmpresa import TelaEmpresa
 
 import re
 
@@ -107,6 +106,7 @@ class CadastroEmpresa(QWidget):
             QMessageBox.critical(self, "Erro", f"Ocorreu um erro ao cadastrar a empresa:\n{e}")
 
     def voltar_tela(self):
+        from ui.telaEmpresa import TelaEmpresa
         self.tela_empresa = TelaEmpresa()
         self.tela_empresa.showMaximized()
         self.close()

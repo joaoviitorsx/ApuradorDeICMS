@@ -9,6 +9,9 @@ from datetime import datetime
 def processar_sped(conteudo, nome_banco):
     conteudo = process_data(conteudo)
     conexao = conectar_banco(nome_banco)
+    if not conexao:
+        raise Exception(f"[ERRO] Não foi possível conectar ao banco '{nome_banco}'")
+
     cursor = conexao.cursor()
     linhas = conteudo.split('\n')
 
@@ -162,7 +165,6 @@ def clonar_c170(nome_banco):
             conexao.commit()
     finally:
         fechar_banco(conexao)
-
 
 def atualizar_aliquota(nome_banco):
     conexao = conectar_banco(nome_banco)
