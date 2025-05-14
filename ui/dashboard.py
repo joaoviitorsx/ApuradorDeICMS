@@ -36,7 +36,7 @@ class Dashboard(QWidget):
         header_layout.setSpacing(15)
 
         logo_label = QLabel()
-        icone_path = recurso_caminho("resources/images/icone.png")
+        icone_path = recurso_caminho("images/icone.png")
         logo_pixmap = QPixmap(icone_path)
         if not logo_pixmap.isNull():
             logo_label.setPixmap(logo_pixmap.scaled(36, 36, Qt.KeepAspectRatio, Qt.SmoothTransformation))
@@ -84,7 +84,7 @@ class Dashboard(QWidget):
         cards_grid.setSpacing(15)
 
         card1 = AnimatedCard(
-            recurso_caminho("resources/images/card1.png"),
+            recurso_caminho("images/card1.png"),
             "Apurador de ICMS",
             [
                 "Envie os arquivos SPEDs",
